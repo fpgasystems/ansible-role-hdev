@@ -1,0 +1,64 @@
+---
+
+hdev_default_constants:
+  ACAP_SERVERS_LIST: ""
+  ASOC_SERVERS_LIST: ""
+  AVED_DRIVER_NAME: "ami.ko"
+  AVED_PATH: "/opt/amd/aved"
+  AVED_REPO: "Xilinx/AVED"
+  AVED_SMBUS_IP: "smbus_v1_1-20240328"
+  AVED_TAG: "amd_v80_gen5x8_24.1_20241002"
+  AVED_TOOLS_PATH: "/usr/local/bin"
+  AVED_UUID: "3907c6f088e5c23471ab99aae09a9928"
+  BUILD_SERVERS_LIST: ""
+  COLOR_ACAP: |
+    '\033[38;5;160m'
+  COLOR_CPU: |
+    '\033[38;5;49m'
+  COLOR_FAILED: |
+    '\033[0;31m'
+  COLOR_FPGA: |
+    '\033[38;5;160m'
+  COLOR_GPU: |
+    '\033[38;5;243m'
+  COLOR_OFF: |
+    '\033[0m'
+  COLOR_PASSED: |
+    '\033[0;32m'
+  COLOR_XILINX: |
+    '\033[38;5;160m'
+  COMPOSER_REPO: "oreolag/hcmp"
+  COMPOSER_TAG: "2025.1"
+  EMAIL: "hacc@ethz.ch"
+  FPGA_SERVERS_LIST: ""
+  GITHUB_CLI_PATH: "/usr/bin"
+  GPU_SERVERS_LIST: ""
+  LOCAL_PATH: "/local/home/$USER"
+  MTU_DEFAULT: "1576"
+  MTU_MAX: "9000"
+  MTU_MIN: "1500"
+  MY_DRIVERS_PATH: "/opt/hdev/devices_acap_fpga_drivers"
+  MY_PROJECTS_PATH: "/home/$USER/my_projects"
+  NIC_SERVERS_LIST: ""
+  ONIC_DRIVER_COMMIT: "3de2269"
+  ONIC_DRIVER_NAME: "onic.ko"
+  ONIC_DRIVER_REPO: "Xilinx/open-nic-driver"
+  ONIC_SHELL_COMMIT: "940907f"
+  ONIC_SHELL_NAME: "open_nic_shell.bit"
+  ONIC_SHELL_REPO: "Xilinx/open-nic-shell"
+  ROCM_PATH: "/opt/rocm"
+  UPDATES_PATH: "/tmp"
+  VRT_REPO: "fpgasystems/SLASH"
+  VRT_TAG: "v1.1.1"
+  VRT_TEMPLATES: |
+      emu_all
+      sim_all
+      hw_all
+  XDP_BPFTOOL_COMMIT: "687e7f0"
+  XDP_BPFTOOL_REPO: "libbpf/bpftool"
+  XDP_LIBBPF_COMMIT: "20c0a9e"
+  XDP_LIBBPF_REPO: "libbpf/libbpf"
+  XILINXD_LICENSE_FILE: ""
+  XILINX_PLATFORMS_PATH: "/opt/xilinx/platforms"
+  XILINX_TOOLS_PATH: "/tools/Xilinx"
+  XRT_PATH: "/opt/xilinx/xrt"

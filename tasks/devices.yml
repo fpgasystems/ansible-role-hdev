@@ -1,0 +1,40 @@
+---
+
+- name: "Create hdev cluster node dir for {{ hostname }}"
+  file:
+    path: "/opt/hdev/cli/cmdb/{{ hostname }}"
+    state: directory
+    mode: '0755'
+
+- name: "Create network device files for {{ hostname }}"
+  lineinfile:
+    path: "/opt/hdev/cli/cmdb/{{ hostname }}/devices_network"
+    regexp: "^{{ device.key }}"
+    line: "{{ device.key }} {{ device.value.bdf }} {{ device.value.device_type }} {{ device.value.device_name }} {{ device.value.ip | join('/') }} {{ device.value.mac | join('/') }}"
+    create: True
+  when: "'network' in devices"
+  with_dict: "{{ devices.network }}"
+  loop_control:
+    loop_var: device
+
+- name: "Create ACAP FPGA device files for {{ hostname }}"
+  lineinfile:
+    path: "/opt/hdev/cli/cmdb/{{ hostname }}/devices_acap_fpga"
+    regexp: "^{{ device.key }}"
+    line: "{{ device.key }} {{ device.value.bdf_upstream }} {{ device.value.bdf_root }} {{ device.value.linkctl }} {{ device.value.device_type }} {{ device.value.device_name }} {{ device.value.serial_number }} {{ device.value.ip | join('/') }} {{ device.value.mac | join('/') }} {{ device.value.platform }}"
+    create: True
+  when: "'acap_fpga' in devices"
+  with_dict: "{{ devices.acap_fpga }}"
+  loop_control:
+    loop_var: device
+
+- name: "Create GPU device files for {{ hostname }}"
+  lineinfile:
+    path: "/opt/hdev/cli/cmdb/{{ hostname }}/devices_gpu"
+    regexp: "^{{ device.key }}"
+    line: "{{ device.key }} {{ device.value.bus }} {{ device.value.device_type }} {{ device.value.gpu_id }} {{ device.value.serial_number }} {{ device.value.unique_id }}"
+    create: True
+  when: "'gpu' in devices"
+  with_dict: "{{ devices.gpu }}"
+  loop_control:
+    loop_var: device
