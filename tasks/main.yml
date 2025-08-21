@@ -1,115 +1,115 @@
 ---
 
-## Install Github CLI
-#- name: Ensure GPG is installed
-#  ansible.builtin.apt:
-#    name: gpg-agent
-#    state: present
-#
-#- name: Ensure keyrings directory exists
-#  file:
-#    path: /etc/apt/keyrings
-#    mode: 755
-#    state: directory
-#
-#- name: 
-#  get_url:
-#    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
-#    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
-#    mode: go+r
-#
-#- name:
-#  file:
-#    path: /etc/apt/sources.list.d
-#    mode: 755
-#    state: directory
-#
-#- name: Get DEB architecture
-#  shell: dpkg --print-architecture
-#  register: deb_architecture
-#  changed_when: false
-#
-#- name:
-#  lineinfile:
-#    path: /etc/apt/sources.list.d/github-cli.list
-#    create: true
-#    line: "deb [arch={{ deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
-#
-#- name: Install github-cli
-#  apt:
-#    name: gh
-#    state: present
-#    update_cache: true
-#
-## Install other prerequisites
-#- name: Install other prereqs
-#  package:
-#    name: "{{ item }}"
-#    state: present
-#  with_list:
-#    - jq
-#    - uncrustify
-#
-## Install hdev
-#- name: Clone hdev repository from GitHub
-#  git:
-#    repo: "https://github.com/fpgasystems/hdev.git"
-#    dest: "/opt/hdev"
-#    version: main
-#    force: yes
-#
-#- name: Enable bash completions for hdev
-#  ansible.builtin.file:
-#    src: "/opt/hdev/cli/hdev_completion.sh"
-#    dest: /usr/share/bash-completion/completions/hdev
-#    owner: root
-#    group: root
-#    mode: '0755'
-#    state: link
-#
-#- name: Transform .sh scripts to programs without extension and set permissions
-#  block:
-#    - name: Find all .sh files in the target cli directory
-#      find:
-#        paths: "/opt/hdev/cli"
-#        patterns: "*.sh"
-#        excludes: "hdev_completion.sh"
-#        recurse: yes
-#      register: sh_files
-#    - name: Rename .sh scripts to programs without extension
-#      copy:
-#        src: "{{ item.path }}"
-#        dest: "{{ item.path | regex_replace('\\.sh$', '') }}"
-#        remote_src: true
-#        mode: '0755'
-#      loop: "{{ sh_files.files }}"
-#      when: sh_files.matched > 0
-#    - name: Remove the .sh files
-#      file:
-#        path: "{{ item.path }}"
-#        state: absent
-#      loop: "{{ sh_files.files }}"
-#      when: sh_files.matched > 0
-#
-#- name: Add hdev to system-wide PATH
-#  copy:
-#    dest: "/etc/profile.d/hdev.sh"
-#    content: 'PATH=$PATH:/opt/hdev/cli'
-#
-#- name: export CLI_PATH
-#  lineinfile:
-#    path: "/etc/bash.bashrc"
-#    line: "export CLI_PATH=/opt/hdev/cli"
-#
-## Add Constants values
-#- name: Add Constants
-#  copy:
-#    content: "{{ constant.value }}"
-#    dest: "/opt/hdev/cli/constants/{{ constant.key }}"
-#    mode: "0644"
-#  loop_control:
-#    loop_var: constant
-#  with_dict: "{{ hdev_default_constants | combine(hdev_constants | default({}), recursive=True) }}"
+# Install Github CLI
+- name: Ensure GPG is installed
+  ansible.builtin.apt:
+    name: gpg-agent
+    state: present
+
+- name: Ensure keyrings directory exists
+  file:
+    path: /etc/apt/keyrings
+    mode: 755
+    state: directory
+
+- name:
+  get_url:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+    mode: go+r
+
+- name:
+  file:
+    path: /etc/apt/sources.list.d
+    mode: 755
+    state: directory
+
+- name: Get DEB architecture
+  shell: dpkg --print-architecture
+  register: deb_architecture
+  changed_when: false
+
+- name:
+  lineinfile:
+    path: /etc/apt/sources.list.d/github-cli.list
+    create: true
+    line: "deb [arch={{ deb_architecture.stdout }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+
+- name: Install github-cli
+  apt:
+    name: gh
+    state: present
+    update_cache: true
+
+# Install other prerequisites
+- name: Install other prereqs
+  package:
+    name: "{{ item }}"
+    state: present
+  with_list:
+    - jq
+    - uncrustify
+
+# Install hdev
+- name: Clone hdev repository from GitHub
+  git:
+    repo: "https://github.com/fpgasystems/hdev.git"
+    dest: "/opt/hdev"
+    version: main
+    force: true
+
+- name: Enable bash completions for hdev
+  ansible.builtin.file:
+    src: "/opt/hdev/cli/hdev_completion.sh"
+    dest: /usr/share/bash-completion/completions/hdev
+    owner: root
+    group: root
+    mode: '0755'
+    state: link
+
+- name: Transform .sh scripts to programs without extension and set permissions
+  block:
+    - name: Find all .sh files in the target cli directory
+      find:
+        paths: "/opt/hdev/cli"
+        patterns: "*.sh"
+        excludes: "hdev_completion.sh"
+        recurse: true
+      register: sh_files
+    - name: Rename .sh scripts to programs without extension
+      copy:
+        src: "{{ item.path }}"
+        dest: "{{ item.path | regex_replace('\\.sh$', '') }}"
+        remote_src: true
+        mode: '0755'
+      loop: "{{ sh_files.files }}"
+      when: sh_files.matched > 0
+    - name: Remove the .sh files
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ sh_files.files }}"
+      when: sh_files.matched > 0
+
+- name: Add hdev to system-wide PATH
+  copy:
+    dest: "/etc/profile.d/hdev.sh"
+    content: 'PATH=$PATH:/opt/hdev/cli'
+
+- name: export CLI_PATH
+  lineinfile:
+    path: "/etc/bash.bashrc"
+    line: "export CLI_PATH=/opt/hdev/cli"
+
+# Add Constants values
+- name: Add Constants
+  copy:
+    content: "{{ constant.value }}"
+    dest: "/opt/hdev/cli/constants/{{ constant.key }}"
+    mode: "0644"
+  loop_control:
+    loop_var: constant
+  with_dict: "{{ hdev_default_constants | combine(hdev_constants | default({}), recursive=True) }}"
 
 
 - name: Add Devices
@@ -119,7 +119,7 @@
     devices: "{{ hdev_cluster_node.value }}"
   loop_control:
     loop_var: hdev_cluster_node
-  loop: "{{ hdev_devices | dict2items }}"
+  loop: "{{ hdev_servers | dict2items }}"
 
 - name: Check which devices are available on current node
   stat:
@@ -139,7 +139,7 @@
     owner: root
     group: root
     state: link
-    force: yes
+    force: true
   loop_control:
     loop_var: device_type
   loop:
@@ -147,4 +147,8 @@
     - acap_fpga
     - gpu
   when: >
-    (node_devices.results | selectattr('device_type', 'equalto', device_type) | first).stat.exists | default(false)
+    (
+      node_devices.results
+      | selectattr('device_type', 'equalto', device_type)
+      | first
+    ).stat.exists | default(false)
