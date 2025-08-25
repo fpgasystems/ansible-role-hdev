@@ -38,7 +38,7 @@ hdev_default_constants:
   MTU_MAX: "9000"
   MTU_MIN: "1500"
   MY_DRIVERS_PATH: "/opt/hdev/devices_acap_fpga_drivers"
-  MY_PROJECTS_PATH: "/home/$USER/my_projects"
+  MY_PROJECTS_PATH: "/home/$USER/hdev_projects"
   NIC_SERVERS_LIST: ""
   ONIC_DRIVER_COMMIT: "3de2269"
   ONIC_DRIVER_NAME: "onic.ko"
