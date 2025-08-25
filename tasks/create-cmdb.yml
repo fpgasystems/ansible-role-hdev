@@ -11,7 +11,7 @@
     path: "/opt/hdev/cli/cmdb/{{ hostname }}/devices_network"
     regexp: "^{{ device.key }}"
     line: "{{ device.key }} {{ device.value.bdf }} {{ device.value.device_type }} {{ device.value.device_name }} {{ device.value.ip | join('/') }} {{ device.value.mac | join('/') }}"
-    create: True
+    create: true
   when: "'network' in devices"
   with_dict: "{{ devices.network }}"
   loop_control:
@@ -22,7 +22,7 @@
     path: "/opt/hdev/cli/cmdb/{{ hostname }}/devices_acap_fpga"
     regexp: "^{{ device.key }}"
     line: "{{ device.key }} {{ device.value.bdf_upstream }} {{ device.value.bdf_root }} {{ device.value.linkctl }} {{ device.value.device_type }} {{ device.value.device_name }} {{ device.value.serial_number }} {{ device.value.ip | join('/') }} {{ device.value.mac | join('/') }} {{ device.value.platform }}"
-    create: True
+    create: true
   when: "'acap_fpga' in devices"
   with_dict: "{{ devices.acap_fpga }}"
   loop_control:
@@ -33,7 +33,7 @@
     path: "/opt/hdev/cli/cmdb/{{ hostname }}/devices_gpu"
     regexp: "^{{ device.key }}"
     line: "{{ device.key }} {{ device.value.bus }} {{ device.value.device_type }} {{ device.value.gpu_id }} {{ device.value.serial_number }} {{ device.value.unique_id }}"
-    create: True
+    create: true
   when: "'gpu' in devices"
   with_dict: "{{ devices.gpu }}"
   loop_control:
