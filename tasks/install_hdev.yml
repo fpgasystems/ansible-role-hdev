@@ -4,8 +4,26 @@
   git:
     repo: "https://github.com/fpgasystems/hdev.git"
     dest: "/opt/hdev"
-    version: main
+    version: "{{ hdev_version }}"
     force: true
+
+- name: Get the date for the specified version
+  command: "git log -1 --format=%cI {{ hdev_version }}"
+  args:
+    chdir: "/opt/hdev"
+  register: tag_commit_date
+
+- name: Create the TAG file with the specified version
+  copy:
+    content: "{{ hdev_version }}"
+    dest: "/opt/hdev/TAG"
+    mode: '0644'
+
+- name: Create the TAG_DATE file with the date of the specified version
+  copy:
+    content: "{{ tag_commit_date.stdout }}"
+    dest: "/opt/hdev/TAG_DATE"
+    mode: '0644'
 
 - name: Enable bash completions for hdev
   ansible.builtin.file:

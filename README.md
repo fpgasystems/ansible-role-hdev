@@ -18,6 +18,13 @@ Role Variables
 > [!NOTE]
 > this interface is an early draft and bound to change. Expect breaking changes
 
+```yaml
+hdev_version: main
+```
+Selects the version of hdev to be installed. This can be a branch name, commit id or tag.
+
+---
+
 This role expects to be provided with two dictionaries that manage the main configuration of hdev.
 
 ### Constants
