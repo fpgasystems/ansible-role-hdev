@@ -1,3 +1,5 @@
 ---
 
 hdev_version: "main"
+hdev_constants_dir: ""
+hdev_cmdb_dir: ""

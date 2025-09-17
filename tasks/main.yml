@@ -17,27 +17,22 @@
 - name: Install hdev
   import_tasks: ./install_hdev.yml
 
-# Add Constants values
-- name: Populate Constants files
+# Configure hdev
+- name: Copy over constants from hdev_constants_dir
   copy:
-    content: "{{ constant.value }}"
-    dest: "/opt/hdev/cli/constants/{{ constant.key }}"
-    mode: "0644"
-  loop_control:
-    loop_var: constant
-  with_dict: "{{ hdev_default_constants | combine(hdev_constants | default({}), recursive=True) }}"
+    src: "{{ hdev_constants_dir | ensure_trailing_slash }}"
+    dest: "/opt/hdev/cli/constants"
+    remote_src: false
+  when:
+    - (hdev_constants_dir | default('')) | length > 0
 
-
-# Populate CMDB with the Servers
-- name: Populate the cmdb with the servers in the cluster
-  include_tasks: create-cmdb.yml
-  vars:
-    hostname: "{{ hdev_cluster_node.key }}"
-    devices: "{{ hdev_cluster_node.value }}"
-  loop_control:
-    loop_var: hdev_cluster_node
-  loop: "{{ hdev_servers | dict2items }}"
-
+- name: Copy over cmdb from hdev_cmdb_dir
+  copy:
+    src: "{{ hdev_cmdb_dir | ensure_trailing_slash }}"
+    dest: "/opt/hdev/cli/cmdb"
+    remote_src: false
+  when:
+    - (hdev_cmdb_dir | default('')) | length > 0
 
 # Set current node
 - name: Check which devices are available on current node
